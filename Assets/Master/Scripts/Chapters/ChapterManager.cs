@@ -36,6 +36,7 @@ public class ChapterManager : MonoBehaviour
     {
         Debug.Log("Resetting all chapter progress...");
         PlayerPrefs.DeleteKey(UNLOCKED_CHAPTER_KEY);
+        PlayerPrefs.DeleteKey(SELECTED_CHAPTER_KEY);
         PlayerPrefs.Save();
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ChapterTestHelper : MonoBehaviour
 {
+#if UNITY_EDITOR
     [Header("Test Settings")]
-    [Tooltip("Nhấn phím số để set nhanh chapter đã mở khóa cao nhất")]
     [SerializeField] private bool m_EnableKeyboardShortcut = true;
-
+    [SerializeField] private ChapterSelectPanel m_ChapterSelectPanel;
     private void Update()
     {
         if (!m_EnableKeyboardShortcut) return;
@@ -37,28 +37,28 @@ public class ChapterTestHelper : MonoBehaviour
 
     public void SetUnlockedChapter(int chapterIndex)
     {
-     
-        int targetChapter = chapterIndex + 1; 
+
+        int targetChapter = chapterIndex + 1;
         PlayerPrefs.SetInt("HighestUnlockedChapter", targetChapter);
         PlayerPrefs.Save();
 
-        Debug.Log($"<color=green>[Test Helper] Đã set trạng thái: Đã qua Chapter {chapterIndex} (Mở khóa đến Chapter {targetChapter})</color>");
+        Debug.Log($"<color=green>[Test Helper] Done Chapter {chapterIndex} (Unlock to Chapter {targetChapter})</color>");
 
-        ChapterSelectPanel panel = FindObjectOfType<ChapterSelectPanel>();
-        if (panel != null)
+
+        if (m_ChapterSelectPanel != null)
         {
-            panel.RefreshAllChapters();
+            m_ChapterSelectPanel.RefreshAllChapters();
         }
     }
 
     public void ResetAllProgress()
     {
         ChapterManager.ResetProgress();
-
-        ChapterSelectPanel panel = FindObjectOfType<ChapterSelectPanel>();
-        if (panel != null)
+        if (m_ChapterSelectPanel != null)
         {
-            panel.RefreshAllChapters();
+            m_ChapterSelectPanel.RefreshAllChapters();
         }
     }
+#endif
+
 }
