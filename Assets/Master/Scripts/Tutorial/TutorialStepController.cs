@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class TutorialStepController : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class TutorialStepController : MonoBehaviour
     [SerializeField] private GameObject m_HandPointer;
 
     private int m_CurrentStepIndex = 0;
+    private string m_CurrentSceneName;
     public static event Action<int> OnStepChanged;
 
     private void OnEnable()
@@ -36,7 +38,13 @@ public class TutorialStepController : MonoBehaviour
     {
         if (m_HandPointer != null) m_HandPointer.SetActive(false);
 
-        StartStep(0);
+        // Tự động lấy tên Scene hiện tại
+        m_CurrentSceneName = SceneManager.GetActiveScene().name;
+
+        // Đọc step từ SaveData thông qua SaveGameService
+        int savedStep = SaveGameService.Data.GetStepForScene(m_CurrentSceneName);
+
+        StartStep(savedStep);
     }
 
     private void HandleObjectClicked(int clickedIndex)
@@ -55,6 +63,9 @@ public class TutorialStepController : MonoBehaviour
         m_CurrentStepIndex = index;
         LocalStep currentStep = m_SceneSteps[m_CurrentStepIndex];
         OnStepChanged?.Invoke(m_CurrentStepIndex);
+
+        SaveGameService.Data.SetStepForScene(m_CurrentSceneName, m_CurrentStepIndex);
+        SaveGameService.Save();
 
         if (m_HandPointer != null)
         {
@@ -84,5 +95,8 @@ public class TutorialStepController : MonoBehaviour
         {
             m_HandPointer.SetActive(false);
         }
+
+        SaveGameService.Data.SetStepForScene(m_CurrentSceneName, m_SceneSteps.Count);
+        SaveGameService.Save();
     }
 }

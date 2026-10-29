@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class SaveData : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Progression Chapter Data
+    public int highestUnlockedChapter = 1;
+    public int selectedChapterIndex = 1;
 
-    // Update is called once per frame
-    void Update()
+    //Progression Scene Data
+    public List<string> sceneKeys = new List<string>();
+    public List<int> sceneStepValues = new List<int>();
+
+    public int GetStepForScene(string sceneName)
     {
-        
+        int index = sceneKeys.IndexOf(sceneName);
+        return index != -1 ? sceneStepValues[index] : 0;
+    }
+    public void SetStepForScene(string sceneName, int stepIndex)
+    {
+        int index = sceneKeys.IndexOf(sceneName);
+        if (index != -1)
+        {
+            sceneStepValues[index] = stepIndex;
+        }
+        else
+        {
+            sceneKeys.Add(sceneName);
+            sceneStepValues.Add(stepIndex);
+        }
     }
 }

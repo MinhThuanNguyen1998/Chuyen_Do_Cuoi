@@ -8,6 +8,7 @@ public class ChapterTestHelper : MonoBehaviour
     [Header("Test Settings")]
     [SerializeField] private bool m_EnableKeyboardShortcut = true;
     [SerializeField] private ChapterSelectPanel m_ChapterSelectPanel;
+
     private void Update()
     {
         if (!m_EnableKeyboardShortcut) return;
@@ -37,13 +38,12 @@ public class ChapterTestHelper : MonoBehaviour
 
     public void SetUnlockedChapter(int chapterIndex)
     {
-
+      
         int targetChapter = chapterIndex + 1;
-        PlayerPrefs.SetInt("HighestUnlockedChapter", targetChapter);
-        PlayerPrefs.Save();
+        SaveGameService.Data.highestUnlockedChapter = targetChapter;
+        SaveGameService.Save();
 
         Debug.Log($"<color=green>[Test Helper] Done Chapter {chapterIndex} (Unlock to Chapter {targetChapter})</color>");
-
 
         if (m_ChapterSelectPanel != null)
         {
@@ -53,7 +53,7 @@ public class ChapterTestHelper : MonoBehaviour
 
     public void ResetAllProgress()
     {
-        ChapterManager.ResetProgress();
+        ChapterManager.ResetProgress(); 
         if (m_ChapterSelectPanel != null)
         {
             m_ChapterSelectPanel.RefreshAllChapters();
