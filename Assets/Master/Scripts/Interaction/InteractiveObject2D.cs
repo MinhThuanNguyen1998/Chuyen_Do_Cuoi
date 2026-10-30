@@ -35,6 +35,10 @@ public class InteractiveObject2D : MonoBehaviour
         {
             m_MyButton.interactable = (currentStepIndex == m_TutorialStepIndex);
         }
+        if (m_HideSelfOnClicked && currentStepIndex > m_TutorialStepIndex)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void OnButtonClicked()

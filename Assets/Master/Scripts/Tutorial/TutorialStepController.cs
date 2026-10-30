@@ -20,10 +20,16 @@ public class TutorialStepController : MonoBehaviour
     [Header("Shared Hand Pointer")]
     [SerializeField] private GameObject m_HandPointer;
 
-    private int m_CurrentStepIndex = 0;
+    [SerializeField] private bool m_ReplayEventsOnResume = false;
+
+    private int m_CurrentStepIndex;
     private string m_CurrentSceneName;
+    private bool m_IsFinished;
+   
     public static event Action<int> OnStepChanged;
 
+    public bool IsFinished => m_IsFinished;
+    public int CurrentStepIndex => m_CurrentStepIndex;
     private void OnEnable()
     {
         InteractiveObject2D.OnObjectClicked += HandleObjectClicked;
@@ -38,11 +44,18 @@ public class TutorialStepController : MonoBehaviour
     {
         if (m_HandPointer != null) m_HandPointer.SetActive(false);
 
-        // Tự động lấy tên Scene hiện tại
-        m_CurrentSceneName = SceneManager.GetActiveScene().name;
+        m_CurrentSceneName = gameObject.scene.name;
 
-        // Đọc step từ SaveData thông qua SaveGameService
-        int savedStep = SaveGameService.Data.GetStepForScene(m_CurrentSceneName);
+        int savedStep = Mathf.Max(0, SaveGameService.Data.GetStepForScene(m_CurrentSceneName));
+
+        if (m_ReplayEventsOnResume)
+        {
+            int replayCount = Mathf.Min(savedStep, m_SceneSteps.Count);
+            for (int i = 0; i < replayCount; i++)
+            {
+                m_SceneSteps[i].onStepCompleted?.Invoke();
+            }
+        }
 
         StartStep(savedStep);
     }
@@ -69,34 +82,44 @@ public class TutorialStepController : MonoBehaviour
 
         if (m_HandPointer != null)
         {
-            m_HandPointer.SetActive(true);
             if (currentStep.targetTransform != null)
             {
                 m_HandPointer.transform.position = currentStep.targetTransform.position;
             }
+            m_HandPointer.SetActive(true);
         }
     }
 
     public void TriggerCompleteStep(int stepIndex)
     {
+        if (m_IsFinished) return;
         if (stepIndex != m_CurrentStepIndex) return;
+        if (m_CurrentStepIndex < 0 || m_CurrentStepIndex >= m_SceneSteps.Count) return;
 
-        LocalStep step = m_SceneSteps[m_CurrentStepIndex];
+        m_SceneSteps[m_CurrentStepIndex].onStepCompleted?.Invoke();
 
-        step.onStepCompleted?.Invoke();
-
-        m_CurrentStepIndex++;
-        StartStep(m_CurrentStepIndex);
+        StartStep(m_CurrentStepIndex + 1);
     }
 
     private void FinishSceneTutorial()
     {
+        m_IsFinished = true;
+        m_CurrentStepIndex = m_SceneSteps.Count;
+
         if (m_HandPointer != null)
         {
             m_HandPointer.SetActive(false);
         }
 
-        SaveGameService.Data.SetStepForScene(m_CurrentSceneName, m_SceneSteps.Count);
-        SaveGameService.Save();
+        OnStepChanged?.Invoke(m_SceneSteps.Count); 
+        SaveStep(m_SceneSteps.Count);
+    }
+   
+    private void SaveStep(int step)
+    {
+        if (SaveGameService.Data.SetStepForScene(m_CurrentSceneName, step))
+        {
+            SaveGameService.Save();
+        }
     }
 }

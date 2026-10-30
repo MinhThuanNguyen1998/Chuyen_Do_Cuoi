@@ -1,33 +1,51 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class SaveData : MonoBehaviour
+[Serializable]
+public class SceneStepEntry
+{
+    public string sceneName;
+    public int step;
+}
+[Serializable]
+public class SaveData
 {
     // Progression Chapter Data
     public int highestUnlockedChapter = 1;
     public int selectedChapterIndex = 1;
 
-    //Progression Scene Data
-    public List<string> sceneKeys = new List<string>();
-    public List<int> sceneStepValues = new List<int>();
 
+    public List<SceneStepEntry> sceneSteps = new List<SceneStepEntry>();
     public int GetStepForScene(string sceneName)
     {
-        int index = sceneKeys.IndexOf(sceneName);
-        return index != -1 ? sceneStepValues[index] : 0;
+        var entry = FindEntry(sceneName);
+        return entry != null ? entry.step : 0;
     }
-    public void SetStepForScene(string sceneName, int stepIndex)
+    public bool SetStepForScene(string sceneName, int stepIndex)
     {
-        int index = sceneKeys.IndexOf(sceneName);
-        if (index != -1)
+        var entry = FindEntry(sceneName);
+        if (entry == null)
         {
-            sceneStepValues[index] = stepIndex;
+            sceneSteps.Add(new SceneStepEntry { sceneName = sceneName, step = stepIndex });
+            return true;
         }
-        else
+
+        if (entry.step == stepIndex) return false;
+        entry.step = stepIndex;
+        return true;
+    }
+    public void ClearTutorialProgress()
+    {
+        sceneSteps.Clear();
+    }
+    private SceneStepEntry FindEntry(string sceneName)
+    {
+        for (int i = 0; i < sceneSteps.Count; i++)
         {
-            sceneKeys.Add(sceneName);
-            sceneStepValues.Add(stepIndex);
+            if (sceneSteps[i] != null && sceneSteps[i].sceneName == sceneName)
+                return sceneSteps[i];
         }
+        return null;
     }
 }

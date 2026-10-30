@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class SaveGameService : MonoBehaviour
     }
     public static void Load()
     {
+         SaveData loaded = null;
         if (PlayerPrefs.HasKey(SAVE_KEY))
         {
             string json = PlayerPrefs.GetString(SAVE_KEY);
@@ -36,9 +38,16 @@ public class SaveGameService : MonoBehaviour
     {
         if (m_CachedData == null) m_CachedData = new SaveData();
 
-        string json = JsonUtility.ToJson(m_CachedData);
-        PlayerPrefs.SetString(SAVE_KEY, json);
-        PlayerPrefs.Save();
+        try
+        {
+            string json = JsonUtility.ToJson(m_CachedData);
+            PlayerPrefs.SetString(SAVE_KEY, json);
+            PlayerPrefs.Save();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[SaveGameService] Không thể lưu dữ liệu: {e.Message}");
+        }
     }
     public static void ClearData()
     {
@@ -46,5 +55,10 @@ public class SaveGameService : MonoBehaviour
         PlayerPrefs.DeleteKey(SAVE_KEY);
         PlayerPrefs.Save();
         Debug.Log("Game progress reset successfully!");
+    }
+    public static void ResetTutorialProgress()
+    {
+        Data.ClearTutorialProgress();
+        Save();
     }
 }

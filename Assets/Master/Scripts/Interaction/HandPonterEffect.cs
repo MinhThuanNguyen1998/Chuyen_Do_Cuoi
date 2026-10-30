@@ -15,10 +15,12 @@ public class HandPonterEffect : MonoBehaviour
 
     private void Awake()
     {
-        m_InitialLocalPos = transform.localPosition;
-        m_IsInitialized = true;
+        if (!m_IsInitialized)
+        {
+            m_InitialLocalPos = transform.localPosition;
+            m_IsInitialized = true;
+        }
     }
-
     private void OnEnable()
     {
         if (!m_IsInitialized)
@@ -32,23 +34,33 @@ public class HandPonterEffect : MonoBehaviour
 
     private void OnDisable()
     {
-        if (m_Tween != null && m_Tween.IsActive())
-        {
-            m_Tween.Kill();
-        }
+        KillTween();
         transform.localPosition = m_InitialLocalPos;
     }
+    public void MoveTo(Vector3 worldPosition)
+    {
+        transform.position = worldPosition;
+        m_InitialLocalPos = transform.localPosition;
+        m_IsInitialized = true;
 
+        if (isActiveAndEnabled) PlayFloatingEffect();
+    }
     private void PlayFloatingEffect()
     {
+        KillTween();
         transform.localPosition = m_InitialLocalPos;
-
-        m_Tween?.Kill();
 
         m_Tween = transform.DOLocalMoveY(m_InitialLocalPos.y + m_MoveDistance, m_Duration)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine)
             .SetLink(gameObject);
     }
-
+    private void KillTween()
+    {
+        if (m_Tween != null && m_Tween.IsActive())
+        {
+            m_Tween.Kill();
+        }
+        m_Tween = null;
+    }
 }
