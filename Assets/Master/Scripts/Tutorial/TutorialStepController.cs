@@ -64,6 +64,11 @@ public class TutorialStepController : MonoBehaviour
     {
         TriggerCompleteStep(clickedIndex);
     }
+    public void OnDialogueContinueClicked()
+    {
+        if (m_IsFinished) return;
+        TriggerCompleteStep(m_CurrentStepIndex);
+    }
 
     public void StartStep(int index)
     {
