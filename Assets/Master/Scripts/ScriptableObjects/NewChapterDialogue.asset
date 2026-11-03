@@ -22,7 +22,7 @@ MonoBehaviour:
   - stepIndex: 1
     avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
     textContent: "V\xE9 \u0111\xF2...23 gi\u1EDD 45 ph\xFAt\nV\xE0 s\u1ED1 18?"
-    voiceAudio: {fileID: 0}
+    voiceAudio: {fileID: 8300000, guid: cdd1a87ab8056ec498feed4333a0693e, type: 3}
   - stepIndex: 2
     avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
     textContent: "M\xE1y cassette v\u1EABn c\xF2n ch\u1EA1y \u0111\u01B0\u1EE3c...\nTh\u1EED
