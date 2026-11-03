@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandPonterEffect : MonoBehaviour
+public class HandPointerEffect : MonoBehaviour
 {
     [Header("Tween Settings")]
     [SerializeField] private float m_MoveDistance = 20f;

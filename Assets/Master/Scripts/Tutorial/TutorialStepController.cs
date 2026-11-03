@@ -32,12 +32,14 @@ public class TutorialStepController : MonoBehaviour
     public int CurrentStepIndex => m_CurrentStepIndex;
     private void OnEnable()
     {
-        InteractiveObject2D.OnObjectClicked += HandleObjectClicked;
+        InteractiveObject2D.OnTutorialObjectClicked += HandleObjectClicked;
+        TutorialDialogueUI.OnButtonContinueClicked += OnDialogueContinueClicked;
     }
 
     private void OnDisable()
     {
-        InteractiveObject2D.OnObjectClicked -= HandleObjectClicked;
+        InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
+        TutorialDialogueUI.OnButtonContinueClicked -= OnDialogueContinueClicked;
     }
 
     private void Start()
@@ -59,10 +61,10 @@ public class TutorialStepController : MonoBehaviour
 
         StartStep(savedStep);
     }
-
-    private void HandleObjectClicked(int clickedIndex)
+  
+    private void HandleObjectClicked()
     {
-        TriggerCompleteStep(clickedIndex);
+        if (m_HandPointer != null) m_HandPointer.SetActive(false);
     }
     public void OnDialogueContinueClicked()
     {
@@ -100,7 +102,6 @@ public class TutorialStepController : MonoBehaviour
         if (m_IsFinished) return;
         if (stepIndex != m_CurrentStepIndex) return;
         if (m_CurrentStepIndex < 0 || m_CurrentStepIndex >= m_SceneSteps.Count) return;
-
         m_SceneSteps[m_CurrentStepIndex].onStepCompleted?.Invoke();
 
         StartStep(m_CurrentStepIndex + 1);

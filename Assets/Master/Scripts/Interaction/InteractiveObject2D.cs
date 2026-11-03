@@ -10,7 +10,8 @@ public class InteractiveObject2D : MonoBehaviour
     [SerializeField] private bool m_HideSelfOnClicked = true;
     [SerializeField] private Button m_MyButton;
 
-    public static event Action<int> OnObjectClicked;
+  public static event Action OnTutorialObjectClicked;
+    
 
     private void OnEnable()
     {
@@ -29,13 +30,20 @@ public class InteractiveObject2D : MonoBehaviour
             m_MyButton.onClick.AddListener(OnButtonClicked);
         }
     }
+    private void OnDestroy()
+    {
+        if (m_MyButton != null)
+        {
+            m_MyButton.onClick.RemoveListener(OnButtonClicked);
+        }
+    }
     private void HandleStepChanged(int currentStepIndex)
     {
         if (m_MyButton != null)
         {
             m_MyButton.interactable = (currentStepIndex == m_TutorialStepIndex);
         }
-        if (m_HideSelfOnClicked && currentStepIndex > m_TutorialStepIndex)
+        if (currentStepIndex > m_TutorialStepIndex)
         {
             gameObject.SetActive(false);
         }
@@ -43,11 +51,10 @@ public class InteractiveObject2D : MonoBehaviour
 
     public void OnButtonClicked()
     {
-        OnObjectClicked?.Invoke(m_TutorialStepIndex);
-
         if (m_HideSelfOnClicked)
         {
             gameObject.SetActive(false);
         }
+        OnTutorialObjectClicked?.Invoke();
     }
 }
