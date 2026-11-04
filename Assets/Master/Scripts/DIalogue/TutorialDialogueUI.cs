@@ -6,18 +6,15 @@ using UnityEngine.UI;
 
 public class TutorialDialogueUI : MonoBehaviour
 {
-    [Header("Data & UI Components")]
-    [SerializeField] private DialogueDataSO m_CurrentDialogueData;
+    [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI m_TextComponent;
     [SerializeField] private Image m_AvatarImage;
 
     [Header("Buttons")]
     [SerializeField] private Button m_ButtonContinue;
 
-    private int m_CurrentStepIndex = -1;
-
+    private TutorialDialogueLine m_CurrentLine;
     public static event System.Action OnButtonContinueClicked;
-
     private void Awake()
     {
         if (m_ButtonContinue != null)
@@ -25,13 +22,11 @@ public class TutorialDialogueUI : MonoBehaviour
             m_ButtonContinue.onClick.AddListener(OnContinueClicked);
         }
     }
-
     private void OnEnable()
     {
         TutorialStepController.OnStepChanged += HandleStepChanged;
         TutorialUIManager.OnDialogueTriggeredToPlayAudio += PlayAudioForCurrentStep;
     }
-
     private void OnDisable()
     {
         TutorialStepController.OnStepChanged -= HandleStepChanged;
@@ -43,43 +38,30 @@ public class TutorialDialogueUI : MonoBehaviour
         OnButtonContinueClicked?.Invoke();
     }
 
-    private void HandleStepChanged(int stepIndex)
+    private void HandleStepChanged(int stepIndex, TutorialStepController.LocalStep step)
     {
-        m_CurrentStepIndex = stepIndex; 
-        if (m_CurrentDialogueData == null) return;
+        m_CurrentLine = step?.dialogue;
+        if (m_CurrentLine == null) return;
 
-        var targetDialogue = m_CurrentDialogueData.dialogueList.Find(x => x.stepIndex == stepIndex);
-
-        if (targetDialogue.stepIndex == stepIndex)
+        if (m_TextComponent != null)
         {
-            if (m_TextComponent != null)
-            {
-                m_TextComponent.text = targetDialogue.textContent;
-            }
+            m_TextComponent.text = m_CurrentLine.textContent;
+        }
 
-            if (m_AvatarImage != null)
-            {
-                if (targetDialogue.avatarSprite != null)
-                {
-                    m_AvatarImage.gameObject.SetActive(true);
-                    m_AvatarImage.sprite = targetDialogue.avatarSprite;
-                }
-                else
-                {
-                    m_AvatarImage.gameObject.SetActive(false);
-                }
-            }
+        if (m_AvatarImage != null)
+        {
+            bool hasAvatar = m_CurrentLine.avatarSprite != null;
+            m_AvatarImage.gameObject.SetActive(hasAvatar);
+            if (hasAvatar) m_AvatarImage.sprite = m_CurrentLine.avatarSprite;
         }
     }
 
     public void PlayAudioForCurrentStep()
     {
-        if (m_CurrentDialogueData == null) return;
-
-        var targetDialogue = m_CurrentDialogueData.dialogueList.Find(x => x.stepIndex == m_CurrentStepIndex);
-        if (targetDialogue.stepIndex == m_CurrentStepIndex && targetDialogue.voiceAudio != null)
+        if (m_CurrentLine == null || m_CurrentLine.voiceAudio == null) return;
+        if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlayVoice(targetDialogue.voiceAudio);
+            AudioManager.Instance.PlayVoice(m_CurrentLine.voiceAudio);
         }
     }
 }

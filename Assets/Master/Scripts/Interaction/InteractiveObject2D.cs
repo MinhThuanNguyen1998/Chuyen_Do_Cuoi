@@ -2,26 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InteractiveObject2D : MonoBehaviour
 {
-    [SerializeField] private int m_TutorialStepIndex = 0;
     [SerializeField] private bool m_HideSelfOnClicked = true;
     [SerializeField] private Button m_MyButton;
 
-  public static event Action OnTutorialObjectClicked;
-    
+    [FormerlySerializedAs("m_TutorialStepIndex")]
+    [SerializeField, HideInInspector] private int m_LegacyStepIndex;
 
-    private void OnEnable()
-    {
-        TutorialStepController.OnStepChanged += HandleStepChanged;
-    }
+    public int LegacyStepIndex => m_LegacyStepIndex;
 
-    private void OnDisable()
-    {
-        TutorialStepController.OnStepChanged -= HandleStepChanged;
-    }
+    public static event Action OnTutorialObjectClicked;
 
     private void Awake()
     {
@@ -30,6 +24,7 @@ public class InteractiveObject2D : MonoBehaviour
             m_MyButton.onClick.AddListener(OnButtonClicked);
         }
     }
+
     private void OnDestroy()
     {
         if (m_MyButton != null)
@@ -37,13 +32,15 @@ public class InteractiveObject2D : MonoBehaviour
             m_MyButton.onClick.RemoveListener(OnButtonClicked);
         }
     }
-    private void HandleStepChanged(int currentStepIndex)
+
+    public void ApplyTutorialState(bool isCurrent, bool isPassed)
     {
         if (m_MyButton != null)
         {
-            m_MyButton.interactable = (currentStepIndex == m_TutorialStepIndex);
+            m_MyButton.interactable = isCurrent;
         }
-        if (currentStepIndex > m_TutorialStepIndex)
+
+        if (isPassed)
         {
             gameObject.SetActive(false);
         }

@@ -966,9 +966,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f2113f7ea96a147b75fe2962bc32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TutorialStepIndex: 2
   m_HideSelfOnClicked: 1
   m_MyButton: {fileID: 1079578569}
+  m_LegacyStepIndex: 2
 --- !u!1 &1137426116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,9 +1102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f2113f7ea96a147b75fe2962bc32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TutorialStepIndex: 0
   m_HideSelfOnClicked: 1
   m_MyButton: {fileID: 1137426120}
+  m_LegacyStepIndex: 0
 --- !u!1 &1282120175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,7 +1230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 715ccc9eccdf68249994cdc53532a40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CurrentDialogueData: {fileID: 11400000, guid: f4a47fee5bea6c745bbfaf47f333d2fa, type: 2}
   m_TextComponent: {fileID: 1859633814}
   m_AvatarImage: {fileID: 1976206904}
   m_ButtonContinue: {fileID: 425511594}
@@ -1442,9 +1441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f2113f7ea96a147b75fe2962bc32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TutorialStepIndex: 1
   m_HideSelfOnClicked: 1
   m_MyButton: {fileID: 1655214383}
+  m_LegacyStepIndex: 1
 --- !u!1 &1661601680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,16 +1681,33 @@ MonoBehaviour:
   m_SceneSteps:
   - stepName: Envelope
     targetTransform: {fileID: 1574231161}
+    interactiveObject: {fileID: 1137426121}
+    dialogue:
+      avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
+      textContent: "M\u1ED9t phong b\xEC...?\nM\xECnh c\xF3 \u0111\u1EB7t g\xEC \u0111\xE2u
+        nh\u1EC9..?"
+      voiceAudio: {fileID: 8300000, guid: 29520bac3471e9f49bbfae9ee8ce76d3, type: 3}
     onStepCompleted:
       m_PersistentCalls:
         m_Calls: []
   - stepName: Ticket
     targetTransform: {fileID: 1751699142}
+    interactiveObject: {fileID: 1655214384}
+    dialogue:
+      avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
+      textContent: "V\xE9 \u0111\xF2...23h45\nV\xE0 s\u1ED1 18?"
+      voiceAudio: {fileID: 8300000, guid: 29520bac3471e9f49bbfae9ee8ce76d3, type: 3}
     onStepCompleted:
       m_PersistentCalls:
         m_Calls: []
   - stepName: Cassett
     targetTransform: {fileID: 309556026}
+    interactiveObject: {fileID: 1079578570}
+    dialogue:
+      avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
+      textContent: "M\xE1y cassette v\u1EABn ch\u1EA1y \u0111\u01B0\u1EE3c..,\nTh\u1EED
+        nghe xem"
+      voiceAudio: {fileID: 8300000, guid: cdd1a87ab8056ec498feed4333a0693e, type: 3}
     onStepCompleted:
       m_PersistentCalls:
         m_Calls: []
@@ -1723,7 +1739,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelDialogue: {fileID: 2098624215}
   m_PanelItem: {fileID: 0}
-  m_DialogueUI: {fileID: 1285388544}
 --- !u!1 &1751699141
 GameObject:
   m_ObjectHideFlags: 0

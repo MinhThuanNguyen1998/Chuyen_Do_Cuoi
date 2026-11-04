@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TutorialUIManager : MonoBehaviour
 {
-
     [Header("UI Panels")]
     [SerializeField] private GameObject m_PanelDialogue;
     [SerializeField] private GameObject m_PanelItem;
@@ -28,7 +27,7 @@ public class TutorialUIManager : MonoBehaviour
         if (m_PanelDialogue != null)
         {
             m_PanelDialogue.SetActive(true);
-            OnDialogueTriggeredToPlayAudio?.Invoke(); // to trigger audio playback when dialogue panel is shown
+            OnDialogueTriggeredToPlayAudio?.Invoke(); // play voice when dialogue panel is shown
         }
 
         if (m_PanelItem != null)
@@ -37,16 +36,16 @@ public class TutorialUIManager : MonoBehaviour
         }
     }
 
-    private void HandleStepChanged(int currentStepIndex)
+    private void HandleStepChanged(int currentStepIndex, TutorialStepController.LocalStep step)
     {
         if (m_PanelDialogue != null)
         {
             m_PanelDialogue.SetActive(false);
         }
+
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.StopVoice(); 
+            AudioManager.Instance.StopVoice();
         }
-
     }
 }

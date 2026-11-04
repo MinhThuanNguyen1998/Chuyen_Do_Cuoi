@@ -5,13 +5,24 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+[Serializable]
+public class TutorialDialogueLine
+{
+    public Sprite avatarSprite;
+    [TextArea(3, 5)] public string textContent;
+    public AudioClip voiceAudio;
+}
 public class TutorialStepController : MonoBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public class LocalStep
     {
         public string stepName;
+        [Tooltip("Where the hand pointer appears.")]
         public Transform targetTransform;
+        [Tooltip("Optional. The object the player must click to finish this step.")]
+        public InteractiveObject2D interactiveObject;
+        public TutorialDialogueLine dialogue;
         public UnityEvent onStepCompleted;
     }
 
@@ -20,34 +31,29 @@ public class TutorialStepController : MonoBehaviour
     [Header("Shared Hand Pointer")]
     [SerializeField] private GameObject m_HandPointer;
 
-    [SerializeField] private bool m_ReplayEventsOnResume = false;
-
+    [SerializeField] private bool m_ReplayEventsOnResume = false;   
     private int m_CurrentStepIndex;
     private string m_CurrentSceneName;
     private bool m_IsFinished;
-   
-    public static event Action<int> OnStepChanged;
 
+    public static event Action<int, LocalStep> OnStepChanged;
     public bool IsFinished => m_IsFinished;
     public int CurrentStepIndex => m_CurrentStepIndex;
+
     private void OnEnable()
     {
         InteractiveObject2D.OnTutorialObjectClicked += HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked += OnDialogueContinueClicked;
     }
-
     private void OnDisable()
     {
         InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked -= OnDialogueContinueClicked;
     }
-
     private void Start()
     {
         if (m_HandPointer != null) m_HandPointer.SetActive(false);
-
         m_CurrentSceneName = gameObject.scene.name;
-
         int savedStep = Mathf.Max(0, SaveGameService.Data.GetStepForScene(m_CurrentSceneName));
 
         if (m_ReplayEventsOnResume)
@@ -58,10 +64,8 @@ public class TutorialStepController : MonoBehaviour
                 m_SceneSteps[i].onStepCompleted?.Invoke();
             }
         }
-
         StartStep(savedStep);
     }
-  
     private void HandleObjectClicked()
     {
         if (m_HandPointer != null) m_HandPointer.SetActive(false);
@@ -71,7 +75,6 @@ public class TutorialStepController : MonoBehaviour
         if (m_IsFinished) return;
         TriggerCompleteStep(m_CurrentStepIndex);
     }
-
     public void StartStep(int index)
     {
         if (index >= m_SceneSteps.Count)
@@ -79,10 +82,11 @@ public class TutorialStepController : MonoBehaviour
             FinishSceneTutorial();
             return;
         }
-
         m_CurrentStepIndex = index;
         LocalStep currentStep = m_SceneSteps[m_CurrentStepIndex];
-        OnStepChanged?.Invoke(m_CurrentStepIndex);
+
+        ApplyInteractiveStates(m_CurrentStepIndex);
+        OnStepChanged?.Invoke(m_CurrentStepIndex, currentStep);
 
         SaveGameService.Data.SetStepForScene(m_CurrentSceneName, m_CurrentStepIndex);
         SaveGameService.Save();
@@ -102,6 +106,7 @@ public class TutorialStepController : MonoBehaviour
         if (m_IsFinished) return;
         if (stepIndex != m_CurrentStepIndex) return;
         if (m_CurrentStepIndex < 0 || m_CurrentStepIndex >= m_SceneSteps.Count) return;
+
         m_SceneSteps[m_CurrentStepIndex].onStepCompleted?.Invoke();
 
         StartStep(m_CurrentStepIndex + 1);
@@ -117,10 +122,21 @@ public class TutorialStepController : MonoBehaviour
             m_HandPointer.SetActive(false);
         }
 
-        OnStepChanged?.Invoke(m_SceneSteps.Count); 
+        ApplyInteractiveStates(m_SceneSteps.Count);
+        OnStepChanged?.Invoke(m_SceneSteps.Count, null);
         SaveStep(m_SceneSteps.Count);
     }
-   
+
+    private void ApplyInteractiveStates(int currentIndex)
+    {
+        for (int i = 0; i < m_SceneSteps.Count; i++)
+        {
+            var obj = m_SceneSteps[i].interactiveObject;
+            if (obj == null) continue;
+            obj.ApplyTutorialState(isCurrent: i == currentIndex, isPassed: i < currentIndex);
+        }
+    }
+
     private void SaveStep(int step)
     {
         if (SaveGameService.Data.SetStepForScene(m_CurrentSceneName, step))
