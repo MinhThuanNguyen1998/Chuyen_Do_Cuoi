@@ -38,7 +38,7 @@ public class TutorialDialogueUI : MonoBehaviour
         OnButtonContinueClicked?.Invoke();
     }
 
-    private void HandleStepChanged(int stepIndex, TutorialStepController.LocalStep step)
+    private void HandleStepChanged(int stepIndex, TutorialStepData step)
     {
         m_CurrentLine = step?.dialogue;
         if (m_CurrentLine == null) return;

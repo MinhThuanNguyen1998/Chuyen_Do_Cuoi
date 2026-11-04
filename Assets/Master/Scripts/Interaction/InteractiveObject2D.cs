@@ -24,7 +24,6 @@ public class InteractiveObject2D : MonoBehaviour
             m_MyButton.onClick.AddListener(OnButtonClicked);
         }
     }
-
     private void OnDestroy()
     {
         if (m_MyButton != null)
@@ -32,7 +31,6 @@ public class InteractiveObject2D : MonoBehaviour
             m_MyButton.onClick.RemoveListener(OnButtonClicked);
         }
     }
-
     public void ApplyTutorialState(bool isCurrent, bool isPassed)
     {
         if (m_MyButton != null)
@@ -45,7 +43,6 @@ public class InteractiveObject2D : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
     public void OnButtonClicked()
     {
         if (m_HideSelfOnClicked)

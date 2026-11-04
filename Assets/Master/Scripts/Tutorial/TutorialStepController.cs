@@ -5,38 +5,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-[Serializable]
-public class TutorialDialogueLine
-{
-    public Sprite avatarSprite;
-    [TextArea(3, 5)] public string textContent;
-    public AudioClip voiceAudio;
-}
 public class TutorialStepController : MonoBehaviour
 {
-    [Serializable]
-    public class LocalStep
-    {
-        public string stepName;
-        [Tooltip("Where the hand pointer appears.")]
-        public Transform targetTransform;
-        [Tooltip("Optional. The object the player must click to finish this step.")]
-        public InteractiveObject2D interactiveObject;
-        public TutorialDialogueLine dialogue;
-        public UnityEvent onStepCompleted;
-    }
-
-    [SerializeField] private List<LocalStep> m_SceneSteps = new List<LocalStep>();
+    [SerializeField] private List<TutorialStepData> m_SceneSteps = new List<TutorialStepData>();
 
     [Header("Shared Hand Pointer")]
     [SerializeField] private GameObject m_HandPointer;
 
     [SerializeField] private bool m_ReplayEventsOnResume = false;   
+
     private int m_CurrentStepIndex;
     private string m_CurrentSceneName;
     private bool m_IsFinished;
 
-    public static event Action<int, LocalStep> OnStepChanged;
+    public static event Action<int, TutorialStepData> OnStepChanged;
     public bool IsFinished => m_IsFinished;
     public int CurrentStepIndex => m_CurrentStepIndex;
 
@@ -83,7 +65,7 @@ public class TutorialStepController : MonoBehaviour
             return;
         }
         m_CurrentStepIndex = index;
-        LocalStep currentStep = m_SceneSteps[m_CurrentStepIndex];
+        TutorialStepData currentStep = m_SceneSteps[m_CurrentStepIndex];
 
         ApplyInteractiveStates(m_CurrentStepIndex);
         OnStepChanged?.Invoke(m_CurrentStepIndex, currentStep);
@@ -136,7 +118,6 @@ public class TutorialStepController : MonoBehaviour
             obj.ApplyTutorialState(isCurrent: i == currentIndex, isPassed: i < currentIndex);
         }
     }
-
     private void SaveStep(int step)
     {
         if (SaveGameService.Data.SetStepForScene(m_CurrentSceneName, step))

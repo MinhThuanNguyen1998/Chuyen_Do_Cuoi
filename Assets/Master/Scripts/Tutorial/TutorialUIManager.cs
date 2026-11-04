@@ -36,7 +36,7 @@ public class TutorialUIManager : MonoBehaviour
         }
     }
 
-    private void HandleStepChanged(int currentStepIndex, TutorialStepController.LocalStep step)
+    private void HandleStepChanged(int currentStepIndex, TutorialStepData step)
     {
         if (m_PanelDialogue != null)
         {
