@@ -29,12 +29,13 @@ public class TutorialDialogueUI : MonoBehaviour
     private void OnEnable()
     {
         TutorialStepController.OnStepChanged += HandleStepChanged;
-        PlayAudioForCurrentStep();
+        TutorialUIManager.OnDialogueTriggeredToPlayAudio += PlayAudioForCurrentStep;
     }
 
     private void OnDisable()
     {
         TutorialStepController.OnStepChanged -= HandleStepChanged;
+        TutorialUIManager.OnDialogueTriggeredToPlayAudio -= PlayAudioForCurrentStep;
     }
 
     private void OnContinueClicked()
@@ -44,7 +45,7 @@ public class TutorialDialogueUI : MonoBehaviour
 
     private void HandleStepChanged(int stepIndex)
     {
-        m_CurrentStepIndex = stepIndex; // Lưu lại step hiện tại
+        m_CurrentStepIndex = stepIndex; 
         if (m_CurrentDialogueData == null) return;
 
         var targetDialogue = m_CurrentDialogueData.dialogueList.Find(x => x.stepIndex == stepIndex);

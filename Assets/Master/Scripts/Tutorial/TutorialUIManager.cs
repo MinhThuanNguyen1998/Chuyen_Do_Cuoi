@@ -9,8 +9,7 @@ public class TutorialUIManager : MonoBehaviour
     [SerializeField] private GameObject m_PanelDialogue;
     [SerializeField] private GameObject m_PanelItem;
 
-    [Header("References")]
-    [SerializeField] private TutorialDialogueUI m_DialogueUI;
+    public static event System.Action OnDialogueTriggeredToPlayAudio;
 
     private void OnEnable()
     {
@@ -29,11 +28,7 @@ public class TutorialUIManager : MonoBehaviour
         if (m_PanelDialogue != null)
         {
             m_PanelDialogue.SetActive(true);
-
-            if (m_DialogueUI != null)
-            {
-                m_DialogueUI.PlayAudioForCurrentStep();
-            }
+            OnDialogueTriggeredToPlayAudio?.Invoke(); // to trigger audio playback when dialogue panel is shown
         }
 
         if (m_PanelItem != null)
