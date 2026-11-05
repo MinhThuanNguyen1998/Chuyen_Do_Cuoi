@@ -7,9 +7,6 @@ public class TutorialUIManager : MonoBehaviour
     [Header("Shared UI Panels")]
     [SerializeField] private GameObject m_PanelDialogue;
 
-    [Tooltip("Old shared panel shown on every object click. Move it into each step's Panels list, then leave this empty.")]
-    [SerializeField] private GameObject m_PanelItem;
-
     public static event System.Action OnDialogueTriggeredToPlayAudio;
 
     private TutorialStepData m_CurrentStep;
@@ -32,11 +29,6 @@ public class TutorialUIManager : MonoBehaviour
         {
             m_PanelDialogue.SetActive(true);
             OnDialogueTriggeredToPlayAudio?.Invoke(); // play voice when dialogue panel is shown
-        }
-
-        if (m_PanelItem != null)
-        {
-            m_PanelItem.SetActive(true);
         }
 
         SetPanels(m_CurrentStep, true);

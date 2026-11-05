@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4da9dd8fe47ec3499b56e3100c0b8aa, type: 3}
   m_Name: TutorialDataSO
   m_EditorClassIdentifier: 
-  m_AvatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
-  m_TextContent: 1
-  m_VoiceAudio: {fileID: 0}
+  m_Lines:
+  - m_AvatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
+    m_TextContent: 1
+    m_VoiceAudio: {fileID: 8300000, guid: 29520bac3471e9f49bbfae9ee8ce76d3, type: 3}
+  - m_AvatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
+    m_TextContent: 2
+    m_VoiceAudio: {fileID: 8300000, guid: cdd1a87ab8056ec498feed4333a0693e, type: 3}

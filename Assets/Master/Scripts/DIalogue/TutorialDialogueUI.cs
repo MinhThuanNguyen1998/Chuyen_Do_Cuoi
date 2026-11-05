@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class TutorialDialogueUI : MonoBehaviour
 {
+    [Header("Shared Dialogue Data")]
+    [SerializeField] private TutorialDialogueSO m_Dialogue;
+
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI m_TextComponent;
     [SerializeField] private Image m_AvatarImage;
@@ -13,7 +16,7 @@ public class TutorialDialogueUI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button m_ButtonContinue;
 
-    private TutorialDialogueSO m_CurrentLine;
+    private TutorialDialogueLine m_CurrentLine;
     public static event System.Action OnButtonContinueClicked;
     private void Awake()
     {
@@ -40,7 +43,7 @@ public class TutorialDialogueUI : MonoBehaviour
 
     private void HandleStepChanged(int stepIndex, TutorialStepData step)
     {
-        m_CurrentLine = step?.dialogue;
+        m_CurrentLine = (step != null && m_Dialogue != null) ? m_Dialogue.GetLine(stepIndex) : null;
         if (m_CurrentLine == null) return;
 
         if (m_TextComponent != null)

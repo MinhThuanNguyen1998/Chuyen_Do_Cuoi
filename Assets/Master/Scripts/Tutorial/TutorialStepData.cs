@@ -12,7 +12,6 @@ public class TutorialStepData
     public string stepName;
     public Transform targetTransform;
     public InteractiveObject2D interactiveObject;
-    public TutorialDialogueSO dialogue;
     public List<GameObject> panels = new List<GameObject>();
     public UnityEvent onStepCompleted;
 }
