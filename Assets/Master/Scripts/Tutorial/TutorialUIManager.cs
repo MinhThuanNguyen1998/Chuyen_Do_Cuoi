@@ -39,7 +39,7 @@ public class TutorialUIManager : MonoBehaviour
     private void HandleObjectClicked()
     {
         if (m_CurrentStep != null &&
-            m_CurrentStep.ResolvedDialogueTrigger == TutorialDialogueTrigger.OnObjectClicked)
+           m_CurrentStep.dialogueTrigger == TutorialDialogueTrigger.OnObjectClicked)
         {
             ShowDialogue();
         }
@@ -75,7 +75,7 @@ public class TutorialUIManager : MonoBehaviour
             SetPanels(step, true);
         }
 
-        if (step.ResolvedDialogueTrigger == TutorialDialogueTrigger.Immediately)
+        if (step.dialogueTrigger == TutorialDialogueTrigger.Immediately)
         {
             m_PendingShowDialogue = true;
         }
