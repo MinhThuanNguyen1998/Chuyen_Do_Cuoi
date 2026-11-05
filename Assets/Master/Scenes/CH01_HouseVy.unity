@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 605, y: -400}
-  m_SizeDelta: {x: 256, y: 512}
+  m_AnchoredPosition: {x: 610, y: -387}
+  m_SizeDelta: {x: 178, y: 306}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5819767
 MonoBehaviour:
@@ -737,7 +737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: -238}
+  m_AnchoredPosition: {x: 2, y: -149}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &856933348
@@ -1689,7 +1689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1620039466
@@ -2101,38 +2101,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SceneSteps:
-  - stepName: Envelope
+  - stepName: 0
     targetTransform: {fileID: 1574231161}
     interactiveObject: {fileID: 1137426121}
-    dialogue:
-      avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
-      textContent: "M\u1ED9t phong b\xEC...?\nM\xECnh c\xF3 \u0111\u1EB7t g\xEC \u0111\xE2u
-        nh\u1EC9..?"
-      voiceAudio: {fileID: 8300000, guid: 29520bac3471e9f49bbfae9ee8ce76d3, type: 3}
+    dialogue: {fileID: 11400000, guid: 5c7312711fb00a2419449622b2214e2a, type: 2}
     panels:
     - {fileID: 1620039464}
     onStepCompleted:
       m_PersistentCalls:
         m_Calls: []
-  - stepName: Ticket
+  - stepName: 1
     targetTransform: {fileID: 1751699142}
     interactiveObject: {fileID: 1655214384}
-    dialogue:
-      avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
-      textContent: "V\xE9 \u0111\xF2...23h45\nV\xE0 s\u1ED1 18?"
-      voiceAudio: {fileID: 8300000, guid: 29520bac3471e9f49bbfae9ee8ce76d3, type: 3}
+    dialogue: {fileID: 11400000, guid: 5c7312711fb00a2419449622b2214e2a, type: 2}
     panels: []
     onStepCompleted:
       m_PersistentCalls:
         m_Calls: []
-  - stepName: Cassett
+  - stepName: 2
     targetTransform: {fileID: 309556026}
     interactiveObject: {fileID: 1079578570}
-    dialogue:
-      avatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
-      textContent: "M\xE1y cassette v\u1EABn ch\u1EA1y \u0111\u01B0\u1EE3c..,\nTh\u1EED
-        nghe xem"
-      voiceAudio: {fileID: 8300000, guid: cdd1a87ab8056ec498feed4333a0693e, type: 3}
+    dialogue: {fileID: 11400000, guid: 5c7312711fb00a2419449622b2214e2a, type: 2}
     panels: []
     onStepCompleted:
       m_PersistentCalls:
@@ -2403,7 +2392,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 252, y: -417}
+  m_AnchoredPosition: {x: 266, y: -400}
   m_SizeDelta: {x: 512, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1807623878

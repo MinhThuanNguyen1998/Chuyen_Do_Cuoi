@@ -13,7 +13,7 @@ public class TutorialDialogueUI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button m_ButtonContinue;
 
-    private TutorialDialogueLine m_CurrentLine;
+    private TutorialDialogueSO m_CurrentLine;
     public static event System.Action OnButtonContinueClicked;
     private void Awake()
     {
@@ -45,23 +45,23 @@ public class TutorialDialogueUI : MonoBehaviour
 
         if (m_TextComponent != null)
         {
-            m_TextComponent.text = m_CurrentLine.textContent;
+            m_TextComponent.text = m_CurrentLine.TextContent;
         }
 
         if (m_AvatarImage != null)
         {
-            bool hasAvatar = m_CurrentLine.avatarSprite != null;
+            bool hasAvatar = m_CurrentLine.AvatarSprite != null;
             m_AvatarImage.gameObject.SetActive(hasAvatar);
-            if (hasAvatar) m_AvatarImage.sprite = m_CurrentLine.avatarSprite;
+            if (hasAvatar) m_AvatarImage.sprite = m_CurrentLine.AvatarSprite;
         }
     }
 
     public void PlayAudioForCurrentStep()
     {
-        if (m_CurrentLine == null || m_CurrentLine.voiceAudio == null) return;
+        if (m_CurrentLine == null || m_CurrentLine.VoiceAudio == null) return;
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlayVoice(m_CurrentLine.voiceAudio);
+            AudioManager.Instance.PlayVoice(m_CurrentLine.VoiceAudio);
         }
     }
 }
