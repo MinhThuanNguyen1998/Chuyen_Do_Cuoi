@@ -2849,6 +2849,7 @@ MonoBehaviour:
   - stepName: 0
     targetTransform: {fileID: 1574231161}
     interactiveObject: {fileID: 1137426121}
+    dialogueTrigger: 0
     panels:
     - {fileID: 1620039464}
     onStepCompleted:
@@ -2857,6 +2858,7 @@ MonoBehaviour:
   - stepName: 1
     targetTransform: {fileID: 1751699142}
     interactiveObject: {fileID: 1655214384}
+    dialogueTrigger: 1
     panels:
     - {fileID: 1051052668}
     onStepCompleted:
@@ -2865,7 +2867,9 @@ MonoBehaviour:
   - stepName: 2
     targetTransform: {fileID: 309556026}
     interactiveObject: {fileID: 1079578570}
-    panels: []
+    dialogueTrigger: 0
+    panels:
+    - {fileID: 1051052668}
     onStepCompleted:
       m_PersistentCalls:
         m_Calls: []
@@ -2896,6 +2900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PanelDialogue: {fileID: 2098624215}
+  m_PanelItem: {fileID: 0}
 --- !u!1 &1751699141
 GameObject:
   m_ObjectHideFlags: 0
