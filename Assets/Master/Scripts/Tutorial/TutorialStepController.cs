@@ -26,11 +26,13 @@ public class TutorialStepController : MonoBehaviour
     {
         InteractiveObject2D.OnTutorialObjectClicked += HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked += OnDialogueContinueClicked;
+        PuzzleManager.OnPuzzleCompleted += HandlePuzzleCompleted;
     }
     private void OnDisable()
     {
         InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked -= OnDialogueContinueClicked;
+        PuzzleManager.OnPuzzleCompleted -= HandlePuzzleCompleted;
     }
     private void Start()
     {
@@ -53,6 +55,11 @@ public class TutorialStepController : MonoBehaviour
         if (m_HandPointer != null) m_HandPointer.SetActive(false);
     }
     public void OnDialogueContinueClicked()
+    {
+        if (m_IsFinished) return;
+        TriggerCompleteStep(m_CurrentStepIndex);
+    }
+    private void HandlePuzzleCompleted()
     {
         if (m_IsFinished) return;
         TriggerCompleteStep(m_CurrentStepIndex);

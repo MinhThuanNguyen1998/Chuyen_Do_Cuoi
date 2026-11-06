@@ -1,50 +1,65 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PuzzleManager : Singleton<PuzzleManager>
+public class PuzzleManager : MonoBehaviour
 {
     [Header("Puzzle Configuration")]
     [SerializeField] private PuzzlePieceController[] m_AllPieces; // Array of all puzzle pieces in the game
 
+    private readonly List<PuzzlePieceController> m_SubscribedPieces = new List<PuzzlePieceController>();
     private int m_TotalPieces;
-    private int m_PlacedCount = 0;
+    private int m_PlacedCount;
+    private bool m_IsCompleted;
+
+    public static event Action OnPuzzleCompleted;
 
     private void Start()
     {
-        if (m_AllPieces != null)
+        if (m_AllPieces == null || m_AllPieces.Length == 0)
         {
-            m_TotalPieces = m_AllPieces.Length;
+            Debug.LogWarning($"{name}: m_AllPieces is empty, the puzzle can never be completed.", this);
+            return;
+        }
 
-            // Subscribe to the placement event of each puzzle piece
-            foreach (var piece in m_AllPieces)
-            {
-                if (piece != null)
-                {
-                    piece.OnPiecePlaced += HandlePiecePlaced;
-                }
-            }
+        // Only count valid, unique pieces (ignore null / duplicated entries)
+        var unique = new HashSet<PuzzlePieceController>();
+        foreach (var piece in m_AllPieces)
+        {
+            if (piece == null || !unique.Add(piece)) continue;
+
+            piece.OnPiecePlaced += HandlePiecePlaced;
+            m_SubscribedPieces.Add(piece);
+        }
+
+        m_TotalPieces = m_SubscribedPieces.Count;
+
+        if (m_TotalPieces != m_AllPieces.Length)
+        {
+            Debug.LogWarning($"{name}: m_AllPieces contains null or duplicate entries. " +
+                             $"Only {m_TotalPieces}/{m_AllPieces.Length} valid pieces are counted.", this);
         }
     }
 
     private void OnDestroy()
     {
         // Unsubscribe from events to prevent memory leaks
-        if (m_AllPieces != null)
+        foreach (var piece in m_SubscribedPieces)
         {
-            foreach (var piece in m_AllPieces)
+            if (piece != null)
             {
-                if (piece != null)
-                {
-                    piece.OnPiecePlaced -= HandlePiecePlaced;
-                }
+                piece.OnPiecePlaced -= HandlePiecePlaced;
             }
         }
+        m_SubscribedPieces.Clear();
     }
 
     // Handles the logic when a piece is successfully placed
     private void HandlePiecePlaced()
     {
+        if (m_IsCompleted) return;
+
         m_PlacedCount++;
         Debug.Log($"Correctly placed: {m_PlacedCount}/{m_TotalPieces} pieces.");
 
@@ -55,9 +70,9 @@ public class PuzzleManager : Singleton<PuzzleManager>
         }
     }
 
-    // Triggers win conditions, effects, or UI
     private void TriggerWin()
     {
-        // Implement your win screen or effects here
+        m_IsCompleted = true;
+        OnPuzzleCompleted?.Invoke();
     }
 }
