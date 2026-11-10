@@ -8,9 +8,20 @@ public class Cassette : MonoBehaviour
     [SerializeField] private float m_SeekStep = 5f;
 
     [Header("Cooldown Settings")]
-    [SerializeField] private float m_SeekCooldown = 0.15f; // Thời gian chờ giữa 2 lần bấm
+    [SerializeField] private float m_SeekCooldown = 0.15f;
     private float m_NextSeekTime = 0f;
+    private void OnEnable()
+    {
+       
+    }
 
+    private void OnDisable()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopVoice();
+        }
+    }
     public void OnButtonPlayClick()
     {
         AudioManager.Instance.PlayVoice(m_CassetteClip);
