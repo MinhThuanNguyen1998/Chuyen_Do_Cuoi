@@ -29,8 +29,6 @@ public class TutorialUIManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Hiện dialogue "Immediately" ở cuối frame để TutorialDialogueUI kịp nạp câu thoại
-        // của step mới trước khi phát voice (thứ tự gọi event giữa các listener không cố định).
         if (!m_PendingShowDialogue) return;
         m_PendingShowDialogue = false;
         ShowDialogue();
@@ -62,7 +60,7 @@ public class TutorialUIManager : MonoBehaviour
             m_PanelDialogue.SetActive(false);
         }
 
-        if (AudioManager.Instance != null)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.StopVoice();
         }

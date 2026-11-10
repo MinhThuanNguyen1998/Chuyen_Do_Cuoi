@@ -62,9 +62,9 @@ public class TutorialDialogueUI : MonoBehaviour
     public void PlayAudioForCurrentStep()
     {
         if (m_CurrentLine == null || m_CurrentLine.VoiceAudio == null) return;
-        if (AudioManager.Instance != null)
+        if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlayVoice(m_CurrentLine.VoiceAudio);
+            AudioManager.Instance.StopVoice();
         }
     }
 }

@@ -12,6 +12,12 @@ public class AudioManager : Singleton<AudioManager>
 
     private bool m_IsVoicePaused;
 
+    protected override void Awake()
+    {
+        IsPersistent = true;
+        base.Awake();
+    }
+
     public void PlayVoice(AudioClip clip)
     {
         if (clip == null || m_VoiceAudioSource == null) return;

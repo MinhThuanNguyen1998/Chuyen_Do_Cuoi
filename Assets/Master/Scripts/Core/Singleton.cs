@@ -4,6 +4,7 @@ public abstract class Singleton<T> : MonoBehaviour
     where T : MonoBehaviour
 {
     private static T _instance;
+    public static bool HasInstance => _instance != null;
     public static T Instance
     {
         get
@@ -18,10 +19,6 @@ public abstract class Singleton<T> : MonoBehaviour
             return _instance;
         }
     }
-
-    /// <summary>
-    /// Có giữ lại khi load scene không
-    /// </summary>
     protected bool IsPersistent = false;
 
     protected virtual void Awake()
@@ -41,10 +38,6 @@ public abstract class Singleton<T> : MonoBehaviour
 
         OnSingletonAwake();
     }
-
-    /// <summary>
-    /// Hook cho class con (thay vì override Awake)
-    /// </summary>
     protected virtual void OnSingletonAwake() { }
 
     protected virtual void OnDestroy()

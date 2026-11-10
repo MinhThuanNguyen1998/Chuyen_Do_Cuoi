@@ -17,7 +17,7 @@ public class Cassette : MonoBehaviour
 
     private void OnDisable()
     {
-        if (AudioManager.Instance != null)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.StopVoice();
         }
