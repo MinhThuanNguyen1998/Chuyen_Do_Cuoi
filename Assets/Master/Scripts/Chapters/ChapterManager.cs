@@ -48,7 +48,7 @@ public class ChapterManager : MonoBehaviour
     }
     private static bool LoadChapter(int chapterIndex, bool resetTutorial)
     {
-        string sceneName = SceneNames.GetChapterScene(chapterIndex);
+        string sceneName = SceneName.GetChapterScene(chapterIndex);
         if (string.IsNullOrEmpty(sceneName))
         {
             Debug.LogWarning($"LoadChapter: chapter {chapterIndex} không hợp lệ.");
