@@ -14,15 +14,28 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject m_SettingPopup;
     [SerializeField] private GameObject m_ChapterSelectPopup;
     [SerializeField] private GameObject m_QuitConfirmPopup;
-
+    [SerializeField] private ChapterSelectPanel m_ChapterSelectPanel;
     private PopupType m_CurrentPopup = PopupType.None;
 
     private void Start() => CloseAllPopups();
+    public void OnClickStarGame()
+    {
+        m_ChapterSelectPanel.RefreshAllChapters();
+        ChapterManager.LoadSelectedChapter();
 
+    }
+    public void OnClickContinueGame()
+    {
+        if (ChapterManager.ContinueCurrentChapter())
+        {
+            m_ChapterSelectPanel.RefreshAllChapters();
+        }
+    }
+  
     public void OnClickOpenSetting() => OpenPopup(PopupType.Setting);
     public void OnClickOpenClickChapterSelect() => OpenPopup(PopupType.ChapterSelect);
     public void OnClickOpenQuitConfirm() => OpenPopup(PopupType.QuitConfirm);
-
+   
     public void OpenPopup(PopupType type)
     {
         if (m_CurrentPopup == type) return;

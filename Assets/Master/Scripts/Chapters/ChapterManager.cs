@@ -6,6 +6,13 @@ public class ChapterManager : MonoBehaviour
 {
     public const int FirstChapter = 1;
     public const int MaxChapter = 4;
+    private static readonly string[] ChapterSceneNames =
+   {
+        "Chapter1",
+        "Chapter2",
+        "Chapter3",
+        "Chapter4",
+    };
     public static int GetUnlockedChapter()
     {
         return Mathf.Clamp(SaveGameService.Data.highestUnlockedChapter, FirstChapter, MaxChapter);
@@ -43,6 +50,33 @@ public class ChapterManager : MonoBehaviour
         SaveGameService.Data.selectedChapterIndex = chapterIndex;
         SaveGameService.Save();
         return true;
+    }
+    public static bool LoadSelectedChapter()
+    {
+        return LoadChapter(GetSelectedChapter(),true);
+    }
+    private static bool LoadChapter(int chapterIndex, bool resetTutorial)
+    {
+        int i = chapterIndex - FirstChapter;
+        if (i < 0 || i >= ChapterSceneNames.Length || string.IsNullOrEmpty(ChapterSceneNames[i]))
+        {
+            Debug.LogWarning($"LoadChapter: {chapterIndex}.");
+            return false;
+        }
+
+        if (resetTutorial)
+        {
+            SaveGameService.ResetTutorialProgress();
+        }
+
+        SceneLoader.Instance.LoadSceneByName(ChapterSceneNames[i]);
+        return true;
+    }
+    public static bool ContinueCurrentChapter()
+    {
+        int current = GetUnlockedChapter();
+        SetSelectedChapter(current);
+        return LoadChapter(current,false);
     }
     public static void ResetChapterProgress()
     {

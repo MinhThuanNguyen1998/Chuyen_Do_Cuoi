@@ -28,7 +28,6 @@ public abstract class Singleton<T> : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            // Duplicate → huỷ ngay
             Destroy(gameObject);
             return;
         }

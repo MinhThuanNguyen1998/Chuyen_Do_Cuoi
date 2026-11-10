@@ -12,7 +12,6 @@ public class SceneLoader : Singleton<SceneLoader>
     [SerializeField] private CanvasGroup m_FadeCanvasGroup;
     protected override void OnSingletonAwake()
     {
-        // Ensure that the SceneLoader persists across scene loads
         IsPersistent = true;
     }
 
