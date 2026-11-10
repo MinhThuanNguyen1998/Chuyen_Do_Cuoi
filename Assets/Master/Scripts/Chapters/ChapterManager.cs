@@ -57,7 +57,7 @@ public class ChapterManager : MonoBehaviour
 
         if (resetTutorial)
         {
-            SaveGameService.ResetTutorialProgress();
+            SaveGameService.ResetTutorialProgressForScenes(sceneName);
         }
 
         SceneLoader.Instance.LoadSceneByName(sceneName);

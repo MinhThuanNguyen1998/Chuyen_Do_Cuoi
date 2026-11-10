@@ -46,7 +46,7 @@ public class SaveGameService : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError($"[SaveGameService] Không thể lưu dữ liệu: {e.Message}");
+            Debug.LogError($"[SaveGameService] Can not save data: {e.Message}");
         }
     }
     public static void ClearData()
@@ -60,5 +60,12 @@ public class SaveGameService : MonoBehaviour
     {
         Data.ClearTutorialProgress();
         Save();
+    }
+    public static void ResetTutorialProgressForScenes(string sceneName)
+    {
+        if (Data.ClearStepForScene(sceneName))
+        {
+            Save();
+        }
     }
 }

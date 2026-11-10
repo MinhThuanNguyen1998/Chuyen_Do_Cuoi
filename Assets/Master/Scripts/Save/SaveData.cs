@@ -39,6 +39,18 @@ public class SaveData
     {
         sceneSteps.Clear();
     }
+    public bool ClearStepForScene(string sceneName)
+    {
+        for (int i = sceneSteps.Count - 1; i >= 0; i--)
+        {
+            if (sceneSteps[i] != null && sceneSteps[i].sceneName == sceneName)
+            {
+                sceneSteps.RemoveAt(i);
+                return true;
+            }
+        }
+        return false;
+    }
     private SceneStepEntry FindEntry(string sceneName)
     {
         for (int i = 0; i < sceneSteps.Count; i++)
