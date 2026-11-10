@@ -7,7 +7,6 @@ public class SceneLoader : Singleton<SceneLoader>
 {
     [Header("Config")]
     [SerializeField] private float m_FadeDuration = 1.0f;
-
     [Header("UI References")]
     [SerializeField] private CanvasGroup m_FadeCanvasGroup;
     protected override void OnSingletonAwake()
@@ -19,7 +18,10 @@ public class SceneLoader : Singleton<SceneLoader>
     {
         StartCoroutine(CoroutineTransitionAndLoad(sceneName));
     }
-
+    public void LoadSceneMainMenu()
+    {
+        LoadSceneByName(SceneName.MainMenu);
+    }
     private IEnumerator CoroutineTransitionAndLoad(string sceneName)
     {
         // 1. Use DOTween to fade the screen to black before loading the new scene

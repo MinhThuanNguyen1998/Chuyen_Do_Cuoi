@@ -6,13 +6,6 @@ public class ChapterManager : MonoBehaviour
 {
     public const int FirstChapter = 1;
     public const int MaxChapter = 4;
-    private static readonly string[] ChapterSceneNames =
-   {
-        "Chapter1",
-        "Chapter2",
-        "Chapter3",
-        "Chapter4",
-    };
     public static int GetUnlockedChapter()
     {
         return Mathf.Clamp(SaveGameService.Data.highestUnlockedChapter, FirstChapter, MaxChapter);
@@ -37,12 +30,10 @@ public class ChapterManager : MonoBehaviour
         SaveGameService.Save();
         return true;
     }
-
     public static int GetSelectedChapter()
     {
         return Mathf.Clamp(SaveGameService.Data.selectedChapterIndex, FirstChapter, GetUnlockedChapter());
     }
-
     public static bool SetSelectedChapter(int chapterIndex)
     {
         if (!IsUnlocked(chapterIndex)) return false;
@@ -57,10 +48,10 @@ public class ChapterManager : MonoBehaviour
     }
     private static bool LoadChapter(int chapterIndex, bool resetTutorial)
     {
-        int i = chapterIndex - FirstChapter;
-        if (i < 0 || i >= ChapterSceneNames.Length || string.IsNullOrEmpty(ChapterSceneNames[i]))
+        string sceneName = SceneNames.GetChapterScene(chapterIndex);
+        if (string.IsNullOrEmpty(sceneName))
         {
-            Debug.LogWarning($"LoadChapter: {chapterIndex}.");
+            Debug.LogWarning($"LoadChapter: chapter {chapterIndex} không hợp lệ.");
             return false;
         }
 
@@ -69,7 +60,7 @@ public class ChapterManager : MonoBehaviour
             SaveGameService.ResetTutorialProgress();
         }
 
-        SceneLoader.Instance.LoadSceneByName(ChapterSceneNames[i]);
+        SceneLoader.Instance.LoadSceneByName(sceneName);
         return true;
     }
     public static bool ContinueCurrentChapter()
