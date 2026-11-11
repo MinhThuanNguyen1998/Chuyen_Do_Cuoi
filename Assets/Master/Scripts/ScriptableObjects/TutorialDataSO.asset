@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Lines:
   - m_AvatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
-    m_TextContent: 1
+    m_TextContent: "M\u1ED9t phong b\xEC...?"
     m_VoiceAudio: {fileID: 0}
   - m_AvatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
     m_TextContent: 2
