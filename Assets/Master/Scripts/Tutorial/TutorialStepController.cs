@@ -26,13 +26,13 @@ public class TutorialStepController : MonoBehaviour
     {
         InteractiveObject2D.OnTutorialObjectClicked += HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked += OnDialogueContinueClicked;
-        PuzzleManager.OnPuzzleCompleted += HandlePuzzleCompleted;
+        PuzzleJigsaw.OnPuzzleCompleted += HandlePuzzleCompleted;
     }
     private void OnDisable()
     {
         InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked -= OnDialogueContinueClicked;
-        PuzzleManager.OnPuzzleCompleted -= HandlePuzzleCompleted;
+        PuzzleJigsaw.OnPuzzleCompleted -= HandlePuzzleCompleted;
     }
     private void Start()
     {

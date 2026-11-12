@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PuzzleManager : MonoBehaviour
+public class PuzzleJigsaw : MonoBehaviour
 {
     [Header("Puzzle Configuration")]
     [SerializeField] private PuzzlePieceController[] m_AllPieces; // Array of all puzzle pieces in the game
