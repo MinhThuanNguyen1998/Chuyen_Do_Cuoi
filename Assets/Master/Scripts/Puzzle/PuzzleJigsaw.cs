@@ -15,6 +15,7 @@ public class PuzzleJigsaw : MonoBehaviour
 
     public static event Action OnPuzzleCompleted;
 
+
     private void Start()
     {
         if (m_AllPieces == null || m_AllPieces.Length == 0)
@@ -67,6 +68,7 @@ public class PuzzleJigsaw : MonoBehaviour
         {
             Debug.Log("All puzzle pieces have been successfully placed!");
             TriggerWin();
+
         }
     }
 

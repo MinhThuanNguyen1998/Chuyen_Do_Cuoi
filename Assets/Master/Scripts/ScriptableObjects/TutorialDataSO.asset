@@ -20,5 +20,5 @@ MonoBehaviour:
     m_TextContent: 2
     m_VoiceAudio: {fileID: 0}
   - m_AvatarSprite: {fileID: 21300000, guid: 33db3e7ddb393314594b9819ef86ad68, type: 3}
-    m_TextContent: 3
+    m_TextContent: "Ch\xECa kh\xF3a s\u1ED1 18..."
     m_VoiceAudio: {fileID: 0}
