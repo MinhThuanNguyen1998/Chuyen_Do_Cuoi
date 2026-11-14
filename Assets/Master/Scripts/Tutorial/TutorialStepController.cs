@@ -25,14 +25,13 @@ public class TutorialStepController : MonoBehaviour
     private void OnEnable()
     {
         InteractiveObject2D.OnTutorialObjectClicked += HandleObjectClicked;
-        TutorialDialogueUI.OnButtonContinueClicked += OnDialogueContinueClicked;
-        PuzzleJigsaw.OnPuzzleCompleted += HandlePuzzleCompleted;
+        TutorialDialogueUI.OnButtonContinueClicked += CompleteCurrentStep;
     }
     private void OnDisable()
     {
         InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
-        TutorialDialogueUI.OnButtonContinueClicked -= OnDialogueContinueClicked;
-        PuzzleJigsaw.OnPuzzleCompleted -= HandlePuzzleCompleted;
+        TutorialDialogueUI.OnButtonContinueClicked -= CompleteCurrentStep;
+        
     }
     private void Start()
     {
@@ -54,12 +53,7 @@ public class TutorialStepController : MonoBehaviour
     {
         if (m_HandPointer != null) m_HandPointer.SetActive(false);
     }
-    public void OnDialogueContinueClicked()
-    {
-        if (m_IsFinished) return;
-        TriggerCompleteStep(m_CurrentStepIndex);
-    }
-    private void HandlePuzzleCompleted()
+    public void CompleteCurrentStep()
     {
         if (m_IsFinished) return;
         TriggerCompleteStep(m_CurrentStepIndex);
