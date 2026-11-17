@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioVolumeSettings : MonoBehaviour
+public class AudioVolumeSettings
 {
     private const string BGM_KEY = "BgmVolume";
     private const string SFX_KEY = "SfxVolume";

@@ -20,7 +20,6 @@ public class AudioManager : Singleton<AudioManager>
 
     protected override void OnSingletonAwake()
     {
-        // Áp âm lượng đã lưu ngay khi game khởi động (không cần mở Setting mới có tác dụng)
         ApplySavedVolumes();
     }
 
