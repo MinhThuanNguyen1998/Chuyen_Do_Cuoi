@@ -7,10 +7,12 @@ public class TutorialDialogueLine
 {
     [SerializeField] private Sprite m_AvatarSprite;
     [SerializeField, TextArea(3, 5)] private string m_TextContent;
+    [SerializeField, TextArea(2, 4)] private string m_HintDescription;
     [SerializeField] private AudioClip m_VoiceAudio;
 
     public Sprite AvatarSprite => m_AvatarSprite;
     public string TextContent => m_TextContent;
+    public string HintDescription => m_HintDescription;
     public AudioClip VoiceAudio => m_VoiceAudio;
 }
 

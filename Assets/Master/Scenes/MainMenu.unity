@@ -8860,7 +8860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97259d8158a0cf44e8b2b18cc7a50356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ClickSound: {fileID: 8300000, guid: 505cac0227a89d94387d16838f7ed4e4, type: 3}
+  m_ClickSound: {fileID: 8300000, guid: 24569654e3795fc4cb2ebaa9287dd6b1, type: 3}
 --- !u!1 &2029201403
 GameObject:
   m_ObjectHideFlags: 0

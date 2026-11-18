@@ -31,7 +31,7 @@ public class UIButtonAudio : MonoBehaviour
 
     private void PlayClickSound()
     {
-        Debug.Log("PlayClickSound called");
+        //Debug.Log("PlayClickSound called");
         if (m_ClickSound != null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySfx(m_ClickSound);

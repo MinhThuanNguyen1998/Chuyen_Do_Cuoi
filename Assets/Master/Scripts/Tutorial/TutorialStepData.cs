@@ -17,7 +17,6 @@ public class TutorialStepData
     public Transform targetTransform;
     public InteractiveObject2D interactiveObject;
     public TutorialDialogueTrigger dialogueTrigger = TutorialDialogueTrigger.OnObjectClicked;
-
     public List<GameObject> panels = new List<GameObject>();
     public UnityEvent onStepCompleted;
 

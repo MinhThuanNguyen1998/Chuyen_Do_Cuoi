@@ -7,18 +7,22 @@ using UnityEngine.SceneManagement;
 
 public class TutorialStepController : MonoBehaviour
 {
+    [Header("Shared Dialogue Data (declared once, broadcast to Dialogue UI + Hint)")]
+    [SerializeField] private TutorialDialogueSO m_Dialogue;
+
     [SerializeField] private List<TutorialStepData> m_SceneSteps = new List<TutorialStepData>();
 
     [Header("Shared Hand Pointer")]
     [SerializeField] private GameObject m_HandPointer;
 
-    [SerializeField] private bool m_ReplayEventsOnResume = false;   
+    [SerializeField] private bool m_ReplayEventsOnResume = false;
 
     private int m_CurrentStepIndex;
     private string m_CurrentSceneName;
     private bool m_IsFinished;
 
     public static event Action<int, TutorialStepData> OnStepChanged;
+    public static event Action<TutorialDialogueLine> OnDialogueLineChanged;
     public bool IsFinished => m_IsFinished;
     public int CurrentStepIndex => m_CurrentStepIndex;
 
@@ -31,7 +35,7 @@ public class TutorialStepController : MonoBehaviour
     {
         InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked -= CompleteCurrentStep;
-        
+
     }
     private void Start()
     {
@@ -69,6 +73,7 @@ public class TutorialStepController : MonoBehaviour
         TutorialStepData currentStep = m_SceneSteps[m_CurrentStepIndex];
 
         ApplyInteractiveStates(m_CurrentStepIndex);
+        OnDialogueLineChanged?.Invoke(GetLine(m_CurrentStepIndex));
         OnStepChanged?.Invoke(m_CurrentStepIndex, currentStep);
 
         SaveGameService.Data.SetStepForScene(m_CurrentSceneName, m_CurrentStepIndex);
@@ -106,6 +111,7 @@ public class TutorialStepController : MonoBehaviour
         }
 
         ApplyInteractiveStates(m_SceneSteps.Count);
+        OnDialogueLineChanged?.Invoke(null);
         OnStepChanged?.Invoke(m_SceneSteps.Count, null);
         SaveStep(m_SceneSteps.Count);
     }
@@ -119,6 +125,11 @@ public class TutorialStepController : MonoBehaviour
             obj.ApplyTutorialState(isCurrent: i == currentIndex, isPassed: i < currentIndex);
         }
     }
+    private TutorialDialogueLine GetLine(int index)
+    {
+        return m_Dialogue != null ? m_Dialogue.GetLine(index) : null;
+    }
+
     private void SaveStep(int step)
     {
         if (SaveGameService.Data.SetStepForScene(m_CurrentSceneName, step))

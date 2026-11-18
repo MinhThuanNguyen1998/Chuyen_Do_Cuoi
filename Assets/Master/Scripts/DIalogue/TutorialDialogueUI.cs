@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,9 +7,6 @@ using UnityEngine.UI;
 
 public class TutorialDialogueUI : MonoBehaviour
 {
-    [Header("Shared Dialogue Data")]
-    [SerializeField] private TutorialDialogueSO m_Dialogue;
-
     [Header("UI Components")]
     [SerializeField] private TextMeshProUGUI m_TextComponent;
     [SerializeField] private Image m_AvatarImage;
@@ -27,12 +25,12 @@ public class TutorialDialogueUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        TutorialStepController.OnStepChanged += HandleStepChanged;
+        TutorialStepController.OnDialogueLineChanged += HandleLineChanged;
         TutorialUIManager.OnDialogueTriggeredToPlayAudio += PlayAudioForCurrentStep;
     }
     private void OnDisable()
     {
-        TutorialStepController.OnStepChanged -= HandleStepChanged;
+        TutorialStepController.OnDialogueLineChanged -= HandleLineChanged;
         TutorialUIManager.OnDialogueTriggeredToPlayAudio -= PlayAudioForCurrentStep;
     }
 
@@ -41,9 +39,9 @@ public class TutorialDialogueUI : MonoBehaviour
         OnButtonContinueClicked?.Invoke();
     }
 
-    private void HandleStepChanged(int stepIndex, TutorialStepData step)
+    private void HandleLineChanged(TutorialDialogueLine line)
     {
-        m_CurrentLine = (step != null && m_Dialogue != null) ? m_Dialogue.GetLine(stepIndex) : null;
+        m_CurrentLine = line;
         if (m_CurrentLine == null) return;
 
         if (m_TextComponent != null)
