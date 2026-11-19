@@ -7,19 +7,19 @@ using UnityEngine.SceneManagement;
 
 public class TutorialStepController : MonoBehaviour
 {
-    [Header("Shared Dialogue Data (declared once, broadcast to Dialogue UI + Hint)")]
     [SerializeField] private TutorialDialogueSO m_Dialogue;
-
     [SerializeField] private List<TutorialStepData> m_SceneSteps = new List<TutorialStepData>();
 
     [Header("Shared Hand Pointer")]
     [SerializeField] private GameObject m_HandPointer;
+    [SerializeField] private bool m_HandPointerEnabled = true;
 
     [SerializeField] private bool m_ReplayEventsOnResume = false;
 
     private int m_CurrentStepIndex;
     private string m_CurrentSceneName;
     private bool m_IsFinished;
+    private bool m_PointerHiddenByClick;
 
     public static event Action<int, TutorialStepData> OnStepChanged;
     public static event Action<TutorialDialogueLine> OnDialogueLineChanged;
@@ -35,28 +35,25 @@ public class TutorialStepController : MonoBehaviour
     {
         InteractiveObject2D.OnTutorialObjectClicked -= HandleObjectClicked;
         TutorialDialogueUI.OnButtonContinueClicked -= CompleteCurrentStep;
-
     }
     private void Start()
     {
-        if (m_HandPointer != null) m_HandPointer.SetActive(false);
         m_CurrentSceneName = gameObject.scene.name;
         int savedStep = Mathf.Max(0, SaveGameService.Data.GetStepForScene(m_CurrentSceneName));
 
         if (m_ReplayEventsOnResume)
         {
             int replayCount = Mathf.Min(savedStep, m_SceneSteps.Count);
-            for (int i = 0; i < replayCount; i++)
-            {
-                m_SceneSteps[i].onStepCompleted?.Invoke();
-            }
+            for (int i = 0; i < replayCount; i++) m_SceneSteps[i].onStepCompleted?.Invoke();
         }
         StartStep(savedStep);
     }
     private void HandleObjectClicked()
     {
-        if (m_HandPointer != null) m_HandPointer.SetActive(false);
+        m_PointerHiddenByClick = true;
+        RefreshHandPointer();
     }
+
     public void CompleteCurrentStep()
     {
         if (m_IsFinished) return;
@@ -70,25 +67,17 @@ public class TutorialStepController : MonoBehaviour
             return;
         }
         m_CurrentStepIndex = index;
-        TutorialStepData currentStep = m_SceneSteps[m_CurrentStepIndex];
+        m_PointerHiddenByClick = false;
 
-        ApplyInteractiveStates(m_CurrentStepIndex);
-        OnDialogueLineChanged?.Invoke(GetLine(m_CurrentStepIndex));
-        OnStepChanged?.Invoke(m_CurrentStepIndex, currentStep);
+        ApplyInteractiveStates(index);
+        OnDialogueLineChanged?.Invoke(GetLine(index));
+        OnStepChanged?.Invoke(index, m_SceneSteps[index]);
 
-        SaveGameService.Data.SetStepForScene(m_CurrentSceneName, m_CurrentStepIndex);
+        SaveGameService.Data.SetStepForScene(m_CurrentSceneName, index);
         SaveGameService.Save();
 
-        if (m_HandPointer != null)
-        {
-            if (currentStep.targetTransform != null)
-            {
-                m_HandPointer.transform.position = currentStep.targetTransform.position;
-            }
-            m_HandPointer.SetActive(true);
-        }
+        RefreshHandPointer();
     }
-
     public void TriggerCompleteStep(int stepIndex)
     {
         if (m_IsFinished) return;
@@ -96,45 +85,47 @@ public class TutorialStepController : MonoBehaviour
         if (m_CurrentStepIndex < 0 || m_CurrentStepIndex >= m_SceneSteps.Count) return;
 
         m_SceneSteps[m_CurrentStepIndex].onStepCompleted?.Invoke();
-
         StartStep(m_CurrentStepIndex + 1);
     }
-
     private void FinishSceneTutorial()
     {
         m_IsFinished = true;
         m_CurrentStepIndex = m_SceneSteps.Count;
 
-        if (m_HandPointer != null)
-        {
-            m_HandPointer.SetActive(false);
-        }
-
+        RefreshHandPointer();
         ApplyInteractiveStates(m_SceneSteps.Count);
         OnDialogueLineChanged?.Invoke(null);
         OnStepChanged?.Invoke(m_SceneSteps.Count, null);
         SaveStep(m_SceneSteps.Count);
     }
+    private void RefreshHandPointer()
+    {
+        if (m_HandPointer == null) return;
 
+        bool hasStep = !m_IsFinished && m_CurrentStepIndex >= 0 && m_CurrentStepIndex < m_SceneSteps.Count;
+        var step = hasStep ? m_SceneSteps[m_CurrentStepIndex] : null;
+        bool show = m_HandPointerEnabled && step != null && step.showHandPointer && !m_PointerHiddenByClick;
+
+        if (show && step.targetTransform != null)
+        {
+            var effect = m_HandPointer.GetComponent<HandPointerEffect>();
+            if (effect != null) effect.MoveTo(step.targetTransform.position);
+            else m_HandPointer.transform.position = step.targetTransform.position;
+        }
+        m_HandPointer.SetActive(show);
+    }
     private void ApplyInteractiveStates(int currentIndex)
     {
         for (int i = 0; i < m_SceneSteps.Count; i++)
         {
             var obj = m_SceneSteps[i].interactiveObject;
-            if (obj == null) continue;
-            obj.ApplyTutorialState(isCurrent: i == currentIndex, isPassed: i < currentIndex);
+            if (obj != null) obj.ApplyTutorialState(isCurrent: i == currentIndex, isPassed: i < currentIndex);
         }
-    }
-    private TutorialDialogueLine GetLine(int index)
-    {
-        return m_Dialogue != null ? m_Dialogue.GetLine(index) : null;
     }
 
+    private TutorialDialogueLine GetLine(int index) => m_Dialogue != null ? m_Dialogue.GetLine(index) : null;
     private void SaveStep(int step)
     {
-        if (SaveGameService.Data.SetStepForScene(m_CurrentSceneName, step))
-        {
-            SaveGameService.Save();
-        }
+        if (SaveGameService.Data.SetStepForScene(m_CurrentSceneName, step)) SaveGameService.Save();
     }
 }
