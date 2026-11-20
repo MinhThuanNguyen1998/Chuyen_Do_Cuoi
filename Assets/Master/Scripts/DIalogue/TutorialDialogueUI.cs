@@ -63,6 +63,7 @@ public class TutorialDialogueUI : MonoBehaviour
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.StopVoice();
+            AudioManager.Instance.PlayVoice(m_CurrentLine.VoiceAudio);
         }
     }
 }

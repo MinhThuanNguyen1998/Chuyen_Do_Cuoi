@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-
 public class TutorialStepController : MonoBehaviour
 {
     [SerializeField] private TutorialDialogueSO m_Dialogue;
@@ -122,7 +121,6 @@ public class TutorialStepController : MonoBehaviour
             if (obj != null) obj.ApplyTutorialState(isCurrent: i == currentIndex, isPassed: i < currentIndex);
         }
     }
-
     private TutorialDialogueLine GetLine(int index) => m_Dialogue != null ? m_Dialogue.GetLine(index) : null;
     private void SaveStep(int step)
     {
